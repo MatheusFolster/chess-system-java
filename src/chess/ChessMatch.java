@@ -94,7 +94,9 @@ public class ChessMatch {
 		if (movedPiece instanceof Pawn) {
 			if ((movedPiece.getColor() == Color.WHITE && target.getRow() == 0) || (movedPiece.getColor() == Color.BLACK && target.getRow() == 7)) {
 				promoted = (ChessPiece)board.piece(target);
-				promoted = replacePromotedPiece("Q");
+				/*promoted = replacePromotedPiece("Q"); It gets weird in the unit test because the "King" 
+				is always in check due to the fake "Queen";
+				*/
 			}
 		}
 		
@@ -131,6 +133,11 @@ public class ChessMatch {
 		ChessPiece newPiece = newPiece(type, promoted.getColor());
 		board.placePiece(newPiece, pos);
 		piecesOnTheBoard.add(newPiece);
+		
+		// re-testing check condition to "void" false checks
+		check = testCheck(currentPlayer) ? true : false;
+		// if give a check when promoting
+		checkMate = testCheckMate(currentPlayer) ? true : false;
 		
 		return newPiece;
 	}
